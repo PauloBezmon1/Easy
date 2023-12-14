@@ -108,15 +108,15 @@ function Header() {
               </p>
 
               {/* BOTÃO DO MENU QUE APARECE ABAIXO DOS 768PX */}
-              <div className="md:hidden flex ">
+              <div className="md:hidden flex items-center gap-3">
               <button
                   className=" px-5 py-1 bg-indigo-700 flex item-center justify-center rounded-xl text-white active-button "
                   onClick={() => setOpenTaskForm(true)}
                 >Add task +
                 </button>
 
-              <button type="button" className="dark: flex items-center justify-center w-7 h-7 text-sm font-semibold text-gray-800 border border-gray-200 rounded-full hs-collapse-toggle hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none" data-hs-collap aria-controls="navbar-collapse-with-animation" aria-label="Toggle navigation">
-                  <img src="icon.png" alt="Logup" onClick={() => window.location.href = "/login" }/>
+              <button type="button" className="dark:bg-white flex items-center justify-center w-7 h-7 text-sm font-semibold text-gray-800 border border-gray-200 rounded-full hs-collapse-toggle hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none" data-hs-collap aria-controls="navbar-collapse-with-animation" aria-label="Toggle navigation">
+                  <img src="icon.png" height={15} width={15} alt="Logup" onClick={() => window.location.href = "/login" }/>
               </button>
 
               </div>
