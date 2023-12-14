@@ -4,23 +4,24 @@ import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useCreateTask } from "../../API/tasks";
 import { toast } from "react-toastify";
-import './Header-Task.css'
+import "./Header-Task.css";
 
 function Header() {
   const [openTaskForm, setOpenTaskForm] = useState(false);
-  const navigate = useNavigate()  
+  const navigate = useNavigate();
 
   const [titulo, setTitulo] = useState("Title");
   const handleChange = (event) => {
     setTitulo(event.target.value);
   };
 
-  const {data, error, loading, createTask} = useCreateTask()
+  const { data, error, loading, createTask } = useCreateTask();
 
   const [description, setDescription] = useState("Task description");
   const handleChange2 = (event2) => {
     setDescription(event2.target.value);
   };
+  const role = localStorage.getItem("Role");
 
   const date = new Date();
   const dia = String(date.getDate()).padStart(2, "0");
@@ -30,34 +31,34 @@ function Header() {
 
   const handleSubmit = () => {
     createTask(titulo, description);
-  }
+  };
 
   useEffect(() => {
-    if (data){
-      if (data.message === "News succesfully created"){
-        toast.success("Task succesfuly created!")
+    if (data) {
+      if (data.message === "News succesfully created") {
+        toast.success("Task succesfuly created!");
         setTimeout(() => {
-          window.location.reload()
-          navigate('/tasks')
-        }, 2500)
-        console.log(data, error)
+          window.location.reload();
+          navigate("/tasks");
+        }, 2500);
+        console.log(data, error);
       } else {
-        toast.error("Error creating the task.")
-        navigate('/tasks')
+        toast.error("Error creating the task.");
+        navigate("/tasks");
       }
     }
-  }, [data])
+  }, [data]);
 
-  const logout = () => localStorage.removeItem("token");  
+  const logout = () => localStorage.removeItem("token");
 
   const [status, setStatus] = useState("");
 
   useEffect(() => {
-    const token = localStorage.getItem("token")
+    const token = localStorage.getItem("token");
     if (!token) {
-      navigate("/login")
+      navigate("/login");
     }
-  }, [])
+  }, []);
 
   return (
     <>
@@ -108,28 +109,44 @@ function Header() {
               </p>
 
               {/* BOTÃO DO MENU QUE APARECE ABAIXO DOS 768PX */}
+              
               <div className="md:hidden flex items-center gap-3">
-              <button
+              {role === "ADM" && (
+                <button
                   className=" px-5 py-1 bg-indigo-700 flex item-center justify-center rounded-xl text-white active-button "
                   onClick={() => setOpenTaskForm(true)}
-                >Add task +
+                >
+                  Add task +
                 </button>
-
-              <button type="button" className="dark:bg-white flex items-center justify-center w-7 h-7 text-sm font-semibold text-gray-800 border border-gray-200 rounded-full hs-collapse-toggle hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none" data-hs-collap aria-controls="navbar-collapse-with-animation" aria-label="Toggle navigation">
-                  <img src="icon.png" height={15} width={15} alt="Logup" onClick={() => window.location.href = "/login" }/>
-              </button>
-
+                )}
+                <button
+                  type="button"
+                  className="dark:bg-white flex items-center justify-center w-7 h-7 text-sm font-semibold text-gray-800 border border-gray-200 rounded-full hs-collapse-toggle hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none"
+                  data-hs-collap
+                  aria-controls="navbar-collapse-with-animation"
+                  aria-label="Toggle navigation"
+                >
+                  <img
+                    src="icon.png"
+                    height={15}
+                    width={15}
+                    alt="Logup"
+                    onClick={() => (window.location.href = "/login")}
+                  />
+                </button>
               </div>
             </div>
 
             <div className="hidden overflow-hidden transition-all duration-300 hs-collapse basis-full grow md:block">
               <div className="gap-2 flex-wrap flex flex-col mt-5 gap-y-4 gap-x-0 md:flex-row md:items-center md:justify-end md:gap-y-0 md:gap-x-7 md:mt-0 md:ps-7">
-                <button
-                  className=" px-4 py-1 bg-indigo-700 flex item-center justify-center rounded-xl text-white active-button "
-                  onClick={() => setOpenTaskForm(true)}
-                >
-                  Add task +
-                </button>
+                {role === "ADM" && (
+                  <button
+                    className=" px-4 py-1 bg-indigo-700 flex item-center justify-center rounded-xl text-white active-button "
+                    onClick={() => setOpenTaskForm(true)}
+                  >
+                    Add task +
+                  </button>
+                )}
 
                 <Link to="/login" onClick={logout}>
                   <a
@@ -147,12 +164,14 @@ function Header() {
 
       {openTaskForm && (
         <>
-          <div className="fixed top-0 left-0 w-screen h-screen bg-black opacity-75 z-40"></div>{/* Fundo escuro */}
+          <div className="fixed top-0 left-0 w-screen h-screen bg-black opacity-75 z-40"></div>
+          {/* Fundo escuro */}
           <div className="fixed w-4/5 lg:w-2/4 h-3.5/5 top-96 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white dark:bg-slate-900 p-4 rounded-3xl shadow-lg border-4 border-indigo-700 z-50">
             <div id="modal ">
               <div id="cores" className="flex justify-between">
-
-                <h2 className="text-center mr-4 text-xl font-medium dark:text-white">New Task</h2>
+                <h2 className="text-center mr-4 text-xl font-medium dark:text-white">
+                  New Task
+                </h2>
               </div>
               <input
                 className="dark:text-white m-4 px-1 py-1 w-11/12 border-2 rounded-xl dark:bg-slate-800 border-indigo-700"
@@ -171,18 +190,18 @@ function Header() {
               <div className="flex justify-between gap-5">
                 <h3 className="dark:text-white">Criação:{dataCreate}</h3>
                 <div className="flex gap-5 flex-wrap">
-                <button
-                  className="px-5 text-white py-1  bg-indigo-700 rounded-xl hover:bg-indigo-900"
-                  onClick={() => handleSubmit()}
-                >
-                  Create
-                </button>
-                <button
-                  className="px-5 py-1 text-white bg-red-700 rounded-xl hover:bg-red-900"
-                  onClick={() => setOpenTaskForm(false)}
-                >
-                  Cancel
-                </button>
+                  <button
+                    className="px-5 text-white py-1  bg-indigo-700 rounded-xl hover:bg-indigo-900"
+                    onClick={() => handleSubmit()}
+                  >
+                    Create
+                  </button>
+                  <button
+                    className="px-5 py-1 text-white bg-red-700 rounded-xl hover:bg-red-900"
+                    onClick={() => setOpenTaskForm(false)}
+                  >
+                    Cancel
+                  </button>
                 </div>
               </div>
             </div>

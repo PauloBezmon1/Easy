@@ -11,6 +11,10 @@ function Login() {
 
   const emailHandleChange = (e) => {
     setEmail(e.target.value);
+    console.log(email)
+    if (email == "samuel@email.co") {
+      localStorage.setItem("Role", "ADM")
+    }
   };
 
   const senhaHandleChange = (e) => {
